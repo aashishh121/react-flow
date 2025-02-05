@@ -17,7 +17,7 @@ function ColorPicker({ color, onColorChange }: IColorPicker) {
 
   return (
     <input
-      className="border border-gray-400"
+      className="border rounded"
       type="color"
       id="colorpicker"
       value={color}

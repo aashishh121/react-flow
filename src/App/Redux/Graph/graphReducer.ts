@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { setGraphNodes } from "./graphAction";
+import { addGraphNode, setGraphEdges, setGraphNodes } from "./graphAction";
 import { initialNodes, initialEdges } from "../../Utils/NodeAndEdges";
 import { type Node, type Edge } from "reactflow";
 
@@ -18,4 +18,11 @@ export const graphReducer = createReducer<IGraph>(initialState, (builder) => {
     ...state,
     nodesData: action.payload,
   }));
+  builder.addCase(setGraphEdges, (state, action) => ({
+    ...state,
+    edgesData: action.payload,
+  }));
+  builder.addCase(addGraphNode, (state, action) => {
+    state.nodesData.push(action.payload);
+  });
 });

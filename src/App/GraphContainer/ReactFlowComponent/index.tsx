@@ -12,16 +12,17 @@ import {
   Panel,
   useReactFlow,
 } from "reactflow";
-
+import { v4 as uuidv4 } from "uuid";
 import "reactflow/dist/style.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { IGraph } from "../../Redux/Graph/graphReducer";
-import { setGraphNodes } from "../../Redux/Graph/graphAction";
+import { setGraphEdges, setGraphNodes } from "../../Redux/Graph/graphAction";
 import NodeCustomizationPanel from "../NodeCustomizationPanel";
 import UndoRedoControls from "../UndoRedoControls";
 import { setHistory } from "../../Redux/History/historyAction";
+import AddNode from "../AddNode";
 
 const nodeTypes = {
   "custom-node": NodeCustomizationPanel,
@@ -58,13 +59,22 @@ function ReactFlowComponent() {
 
   // this useEffect updating nodes state in redux
   useEffect(() => {
+    console.log(nodes, "nodes");
     dispatch(setGraphNodes(nodes));
   }, [nodes]);
+
+  //to update edges
+  useEffect(() => {
+    dispatch(setGraphEdges(edges));
+  }, [edges]);
+
+  // useEffect(() => {
+  //   setNodes(graphData.nodesData);
+  // }, [graphData.nodesData]);
 
   // this useEffect handling render nodes from history stack
   useEffect(() => {
     const presentData = storeData.history.present;
-    console.log(presentData, "data");
     if (presentData) {
       setNodes((nodes) =>
         nodes.map((obj) =>
@@ -80,6 +90,7 @@ function ReactFlowComponent() {
                   ...obj.data,
                   color: presentData?.data.color,
                   fontSize: presentData?.data.fontSize,
+                  label: presentData?.data.label,
                 },
               }
             : obj
@@ -99,12 +110,16 @@ function ReactFlowComponent() {
 
   const onUpdateNode = useCallback(
     (
-      updates: Partial<{ color: string; fontSize: number }>,
+      updates: Partial<{
+        color: string;
+        fontSize: number;
+        label: string;
+      }>,
       isStop: boolean = false
     ) => {
       let updateData;
       setNodes((nodes) =>
-        nodes.map((node) => {
+        nodes.map((node, idx) => {
           if (node.id === selectedNode) {
             updateData = {
               ...node,
@@ -116,6 +131,7 @@ function ReactFlowComponent() {
           }
         })
       );
+
       if (isStop && updateData) {
         dispatch(setHistory(updateData));
       }
@@ -154,6 +170,22 @@ function ReactFlowComponent() {
     [nodes]
   );
 
+  const createNode = () => {
+    const node: Node = {
+      id: uuidv4(),
+      position: { x: Math.random() * 500, y: Math.random() * 500 },
+
+      data: {
+        label: "New Node",
+        color: "",
+        fontSize: 12,
+      },
+      type: "custom-node",
+    };
+
+    setNodes([...nodes, node]);
+  };
+
   // this script is used to add onUpdateNode method in each node data
   // so that we can update node such as changing color or text through onUpdateNode method
   const updatedNodes = nodes.map((node) => ({
@@ -180,7 +212,8 @@ function ReactFlowComponent() {
           nodeTypes={nodeTypes}
           fitView
         >
-          <Panel position={"top-right"}>
+          <Panel className="flex gap-2" position={"top-right"}>
+            <AddNode createNode={createNode} />
             <UndoRedoControls />
           </Panel>
           <Controls />
