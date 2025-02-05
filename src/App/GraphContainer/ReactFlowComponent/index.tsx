@@ -56,14 +56,15 @@ function ReactFlowComponent() {
     };
   }, [handleResize]);
 
-  // this useCallBack updating nodes state in redux
-  useCallback(() => {
+  // this useEffect updating nodes state in redux
+  useEffect(() => {
     dispatch(setGraphNodes(nodes));
   }, [nodes]);
 
-  // this useCallBack handling render nodes from history stack
-  useCallback(() => {
+  // this useEffect handling render nodes from history stack
+  useEffect(() => {
     const presentData = storeData.history.present;
+    console.log(presentData, "data");
     if (presentData) {
       setNodes((nodes) =>
         nodes.map((obj) =>
@@ -85,7 +86,7 @@ function ReactFlowComponent() {
         )
       );
     }
-  }, [storeData.history]);
+  }, [storeData.history.present]);
 
   const onConnect = useCallback(
     (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
