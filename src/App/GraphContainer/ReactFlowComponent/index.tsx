@@ -48,6 +48,7 @@ function ReactFlowComponent() {
     fitView({ duration: 300 });
   }, [fitView]);
 
+  // this useEffect handling responsiveness
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => {
@@ -55,10 +56,12 @@ function ReactFlowComponent() {
     };
   }, [handleResize]);
 
+  // this useCallBack updating nodes state in redux
   useCallback(() => {
     dispatch(setGraphNodes(nodes));
   }, [nodes]);
 
+  // this useCallBack handling render nodes from history stack
   useCallback(() => {
     const presentData = storeData.history.present;
     if (presentData) {
@@ -106,7 +109,6 @@ function ReactFlowComponent() {
               ...node,
               data: { ...node.data, ...updates },
             };
-            console.log(updateData, "updated");
             return updateData;
           } else {
             return node;
@@ -151,6 +153,8 @@ function ReactFlowComponent() {
     [nodes]
   );
 
+  // this script is used to add onUpdateNode method in each node data
+  // so that we can update node such as changing color or text through onUpdateNode method
   const updatedNodes = nodes.map((node) => ({
     ...node,
     data: {
