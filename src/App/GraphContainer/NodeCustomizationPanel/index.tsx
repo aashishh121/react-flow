@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 
 const NodeWithToolbar = ({ data }: any) => {
   const [lableVal, setLabelVal] = useState("");
+
   const onColorChange = useCallback(
     (color: string, isStop: boolean) => {
       data.onUpdateNode({ color }, isStop);

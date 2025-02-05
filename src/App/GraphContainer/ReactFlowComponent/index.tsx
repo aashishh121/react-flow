@@ -108,12 +108,17 @@ function ReactFlowComponent() {
     setSelectedNode(node.id);
   }, []);
 
+  const onPaneClick = useCallback(() => {
+    setSelectedNode(null);
+  }, []);
+
   const onUpdateNode = useCallback(
     (
       updates: Partial<{
         color: string;
         fontSize: number;
         label: string;
+        isToolbarVisible: boolean;
       }>,
       isStop: boolean = false
     ) => {
@@ -207,6 +212,7 @@ function ReactFlowComponent() {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onNodeClick={onNodeClick}
+          onPaneClick={onPaneClick}
           onNodeDragStart={handleNodeDragStart}
           onNodeDragStop={handleNodeDragStop}
           nodeTypes={nodeTypes}
