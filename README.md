@@ -5,13 +5,11 @@ This project is an interactive graph visualization application built with React.
 # Setup Instructions
     git clone https://github.com/aashishh121/react-flow.git
     cd react-flow
-
-# Install Dependencies
     npm install
-
-# Start the app
     npm run start
-    The application will be available at http://localhost:3000.
+    
+ The application will be available at http://localhost:3000.
+   
 
 # Dependencies
     1. react
@@ -42,4 +40,4 @@ This project is an interactive graph visualization application built with React.
       │── index.tsx
 
 # Deployment
-A deployed version of the application is available at: Live Demo
+A deployed version of the application is available at: https://flow-react-task.netlify.app/
