@@ -33,7 +33,7 @@ function FontSizeControl({ fontSize, onFontSizeChange }: IFontSize) {
         max={24}
         min={12}
       /> */}
-      <div className="flex border px-2">
+      <div className="flex border border-gray-400 px-2">
         <div className="pr-2"> {fontSize}</div>
         <div className="flex border-l-2">
           <div
